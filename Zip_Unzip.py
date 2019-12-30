@@ -8,6 +8,10 @@ class __zip_unzip_files__():
         self._zip_unzip_time_=[]
         self.__start__()
 
+    def __ZIP__(self,*lst):
+        with zipfile.ZipFile(lst[0],mode=lst[1]) as zf:
+            zf.write(lst[2])
+
     def __start__(self):
         print('1-ZIP or 2-Unzip')
         x=input()
@@ -31,18 +35,18 @@ class __zip_unzip_files__():
 
             if _Update__Mode_ == '1':#Synhronize
                 self._zip_unzip_time_.append(time.time())
-                zf=zipfile.ZipFile(r''+__zip_path__+'.zip',mode='w')
-                zf.write(r''+__file__)
-                zf.close()
+                
+                self.__ZIP__(r''+__zip_path__+'.zip','w',r''+__file__)
+                
                 self._zip_unzip_time_.append(time.time())
                 print('{:.2f}'.format(self._zip_unzip_time_[1]-self._zip_unzip_time_[0])+' seconds')
                 self._zip_unzip_time_.clear()
                 
             elif _Update__Mode_ == '2':#ADD
                 self._zip_unzip_time_.append(time.time())
-                zf=zipfile.ZipFile(r''+__zip_path__+'.zip',mode='a')
-                zf.write(r''+__file__)
-                zf.close()
+
+                self.__ZIP__(r''+__zip_path__+'.zip','a',r''+__file__)
+                
                 self._zip_unzip_time_.append(time.time())
                 print('{:.2f}'.format(self._zip_unzip_time_[1]-self._zip_unzip_time_[0])+' seconds')
                 self._zip_unzip_time_.clear()
@@ -58,14 +62,12 @@ class __zip_unzip_files__():
             
             for r,d,f in os.walk(r''+__zip_folder__):
                 for  file in f:
-                    zf=zipfile.ZipFile(r''+__zip_path__+'.zip',mode='a')
                     __path__=os.path.join(r,file)
                     try:
                         print(str(os.path.join(r,file)))
-                        zf.write(__path__)
+                        self.__ZIP__(r''+__zip_path__+'.zip','a',__path__)
                     except:
                         print(str(os.path.join(r,file))+' ADD ZIP - NO')
-                    zf.close()
                     
             self._zip_unzip_time_.append(time.time())
             
